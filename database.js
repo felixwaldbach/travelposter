@@ -134,8 +134,7 @@ const addPost = (username, title, content) => {
             var newPost = {
                 author: username,
                 title: title,
-                content: content,
-                likes: 0
+                content: content
             }
             dbo.collection("posts").insertOne(newPost, function (err, res) {
                 if (err) {
@@ -167,11 +166,65 @@ const findUnverifiedUser = (name, rand) =>
         });
     });
 
+const findUserByUsername = (name) =>
+    new Promise((resolve, reject) => {
+        MongoClient.connect(mongoUrl, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("travelposter");
+            dbo
+                .collection("users")
+                .findOne({name: name}, (err, res) => {
+                    if (err) {
+                        db.close();
+                        reject(err);
+                    }
+                    db.close();
+                    resolve(res);
+                });
+        });
+    });
+
+const findPostsByUsername = (name) =>
+    new Promise((resolve, reject) => {
+        MongoClient.connect(mongoUrl, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("travelposter");
+            dbo
+                .collection("posts")
+                .findOne({author: name}, (err, res) => {
+                    if (err) {
+                        db.close();
+                        reject(err);
+                    }
+                    db.close();
+                    resolve(res);
+                });
+        });
+    });
+
+const findAllPosts = () =>
+    new Promise((resolve, reject) => {
+        MongoClient.connect(mongoUrl, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("travelposter");
+            dbo
+                .collection("posts")
+                .find({})
+                .toArray(function(err, res) {
+                    if (err) throw err;
+                    resolve(res);
+                });
+        });
+    });
+
 module.exports = {
     findUser,
     login,
     register,
     unverifiedRegister,
     addPost,
-    findUnverifiedUser
+    findUnverifiedUser,
+    findUserByUsername,
+    findPostsByUsername,
+    findAllPosts
 };
