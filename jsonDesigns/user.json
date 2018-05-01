@@ -1,0 +1,8 @@
+{
+  "name": "name",
+  "email": "email",
+  "password": "password",
+  "age": "age",
+  "description": "description",
+  "favLocation": "favLocation"
+}
