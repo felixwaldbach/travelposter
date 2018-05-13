@@ -5,14 +5,14 @@ block content
     p Welcome to #{title}
 
     div
-        form(action='/api/user/login',method='post')
+        form(action='/post/fileupload',method='post')
             div(data-role='fieldcontain')
                 fieldset(data-role='controlgroup')
-                    label(for='username') username
-                        input(id='username',type='text',value='',placeholder='@',name='username')
+                    label(for='name') name
+                        input(id='name',type='text',value='',placeholder='@',name='name')
             div(data-role='fieldcontain')
                 fieldset(data-role='controlgroup')
-                    label(for='password') password
-                        input(id='password',type='password',value='',placeholder='',name='password')
+                    label(for='filetoupload') file
+                        input(id='filetoupload',type='file',value='',placeholder='',name='filetoupload')
             div(data-role='fieldcontain')
-                input(type='submit',value='Register',data-transition='fade', data-theme='c')
+                input(type='submit',value='Upload',data-transition='fade', data-theme='c')

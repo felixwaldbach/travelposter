@@ -3,21 +3,28 @@ var router = express.Router();
 
 var databaseutils = require('../database');
 
-router.post('/add', /*commonutils.ensureAuthenticated,*/ async function (req, res, next) {
-    console.log("Posting");
-    await databaseutils.addPost(req.body.username, req.body.title, req.body.content);
-    res.send('post correct');
+var formidable = require('formidable');
+var fs = require('fs');
+
+router.post('/fileupload', function (req, res) {
+    var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+        var oldpath = files.image.path;
+        var filename = 'img_' + Date.now() + '_' + files.image.name;
+        var newpath = './uploads/' + filename;
+        fs.rename(oldpath, newpath, async function (err) {
+            if (err) throw err;
+            await databaseutils.addPost(req.body.name, oldpath, newpath, filename);
+            res.write('File uploaded and moved!');
+            res.end();
+        });
+    });
 });
 
-router.get('/get/all', /*commonutils.ensureAuthenticated,*/ async function (req, res, next) {
+router.get('/get/all', async function (req, res) {
+    console.log("Getting posts");
     let posts = await databaseutils.findAllPosts();
-    res.send(posts);
-});
-
-router.get('/get/:name', /*commonutils.ensureAuthenticated,*/ async function (req, res, next) {
-    let posts = await databaseutils.findPostsByUsername(req.params.name);
-    console.log(posts);
-    res.send(posts);
+    res.send({posts: posts});
 });
 
 module.exports = router;
