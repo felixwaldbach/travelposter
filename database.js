@@ -8,7 +8,7 @@ const addPost = (name, filename) => {
             var dbo = db.db("travelposter");
             var newPost = {
                 name: name,
-                filename: filename
+                filename: filename + ".png"
             }
             dbo.collection("posts").insertOne(newPost, function (err, res) {
                 if (err) {
