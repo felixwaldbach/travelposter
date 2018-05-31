@@ -1,9 +1,15 @@
-const mongoUrl = "mongodb://127.0.0.1:27017/";
 const {MongoClient} = require("mongodb");
+
+const mongoUrl = () => {
+  if(process.env.NODE_ENV == "PRODUCTION")
+    return "mongodb://db:27017/";
+  else
+    return "mongodb://127.0.0.1:27017/";
+}
 
 const addPost = (name, filename) => {
     return new Promise((resolve, reject) => {
-        MongoClient.connect(mongoUrl, function (err, db) {
+        MongoClient.connect(mongoUrl(), function (err, db) {
             if (err) throw err;
             var dbo = db.db("travelposter");
             var newPost = {
@@ -24,7 +30,7 @@ const addPost = (name, filename) => {
 
 const findAllPosts = () =>
     new Promise((resolve, reject) => {
-        MongoClient.connect(mongoUrl, function (err, db) {
+        MongoClient.connect(mongoUrl(), function (err, db) {
             if (err) throw err;
             var dbo = db.db("travelposter");
             dbo
