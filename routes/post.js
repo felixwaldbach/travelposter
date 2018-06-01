@@ -27,10 +27,11 @@ async function decodeAndWriteFile(encodedData, callback) {
 
     fs.writeFile("storage/" + filename + ".png", decodedData, function(error) {
         if(error) {
-            res.send({
-                error: true,
-                message: "File could not be written to disk. Please contact admin."
-            });
+            //res.send({
+                //error: true,
+                //message: "File could not be written to disk. Please contact admin."
+            //});
+            console.log(error);
         }
     });
 
