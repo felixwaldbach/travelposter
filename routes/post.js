@@ -25,7 +25,12 @@ async function decodeAndWriteFile(encodedData, callback) {
     var decodedData = Buffer.from(encodedData, "base64");
     var filename = crypto.createHash("md5").update((+ new Date()).toString()).digest("hex");
 
-    fs.writeFile("storage/" + filename + ".png", decodedData, function(error) {
+    if(process.env.NODE_ENV == "PRODUCTION")
+      var path = "/usr/app/storage/";
+    else
+      var path = "storage/";
+
+    fs.writeFile(path + filename + ".png", decodedData, function(error) {
         if(error) {
             //res.send({
                 //error: true,
