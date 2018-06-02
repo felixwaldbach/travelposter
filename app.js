@@ -8,8 +8,8 @@ var app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json({limit: '20mb'}));
+app.use(bodyParser.urlencoded({limit: '20mb', extended: true}));
 
 app.set('view engine', 'jade');
 
